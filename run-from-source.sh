@@ -52,7 +52,7 @@ fi
 
 echo ">> Building all services from source and deploying (first run is slow)..."
 cd "${SCRIPT_DIR}"
-skaffold run --platform=linux/amd64
+skaffold run --platform=linux/amd64 --kube-context "kind-${CLUSTER}"
 
 echo ">> Deployed. Port-forward the frontend with:"
 echo "   kubectl --context kind-${CLUSTER} port-forward deployment/frontend 8080:8080"
