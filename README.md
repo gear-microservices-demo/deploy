@@ -39,6 +39,24 @@ Tear down with:
 kind delete cluster --name boutique
 ```
 
-To build and run from local source instead of prebuilt images, use Skaffold
-(`skaffold run`) with the per-service repos checked out as siblings, or the
-`helm-chart/` and `kustomize/` variants.
+## Run from local source
+
+To build every service from your local code (instead of the prebuilt images)
+and run it on kind via Skaffold:
+
+```bash
+./run-from-source.sh
+```
+
+Skaffold's build contexts (`skaffold.yaml`) expect each service under
+`./src/<service>`, but the services live in separate repos. The script checks
+out any missing per-service repos as siblings of this repo, symlinks them into
+`./src/` (gitignored), creates the `boutique` kind cluster, then `skaffold run`
+builds all 12 images and loads them into the cluster. The first build is slow
+(it builds every image from scratch). Use `./run-from-source.sh --no-run` to
+only set up `src/` and then drive `skaffold` yourself.
+
+Requirements: `docker` (running), `kind`, `kubectl`, `skaffold`, `git`.
+
+The `helm-chart/` and `kustomize/` variants are also available for other
+deployment workflows.
